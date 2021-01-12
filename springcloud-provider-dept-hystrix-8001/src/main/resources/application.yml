@@ -37,7 +37,7 @@ eureka:
     service-url:
       defaultZone: http://localhost:7001/eureka/
   instance:
-    instance-id: springcloud-provider-8001
+    instance-id: springcloud-provider-hystrix-8001
 
 # info配置  监控配置信息   监控信息页面
 info:

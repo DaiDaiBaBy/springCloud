@@ -1,5 +1,6 @@
 package com.zhoufu.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.zhoufu.service.DeptService;
 import com.zhoufu.springcloud.pojo.Dept;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,24 @@ public class DeptController {
     public boolean addDept(Dept dept){
         return deptService.addDept(dept);
     }
+
+    @HystrixCommand(fallbackMethod = "hystrixGet")
     @GetMapping("/dept/get/{id}")
     public Dept getDept(@PathVariable("id") Long id){
-        return deptService.queryById(id);
+        Dept dept = deptService.queryById(id);
+        if (dept == null){
+            throw new RuntimeException("id=>" +id+".不存在该用户，或者信息无法找到~");
+        }
+        return dept;
     }
+
+    // Hystrix 备选方案
+    public Dept hystrixGet(@PathVariable("id") Long id){
+        return new Dept().setDeptno(id).setDname("id=>" + id + "没有对应的信息，null -- @Hystrix")
+                .setDb_source("no this database in MySql");
+    }
+
+
     @GetMapping("/dept/list")
     public List<Dept> queryAll(){
         return deptService.queryAll();

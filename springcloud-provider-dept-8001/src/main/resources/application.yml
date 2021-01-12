@@ -19,3 +19,28 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/db01?serverTimezone=UTC&useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8
     username: root
     password: '!QAZ1qaz'
+  zipkin:
+    base-url: http://localhost:9411
+    discovery-client-enabled: false
+    sender:
+      type: web
+  sleuth:
+    web:
+      client:
+        enabled: true
+    sampler:
+      probability: 1.0
+
+# Eureka 配置， 进行服务注册
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7001/eureka/
+  instance:
+    instance-id: springcloud-provider-8001
+
+# info配置  监控配置信息   监控信息页面
+info:
+  app.name: zhoufu-springcloud
+  company.name: blog.zhoufustudy.com
+
